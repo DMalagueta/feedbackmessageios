@@ -1,129 +1,320 @@
-.feedback-message {
+/*
+  iOS-style notification animation.
+  Circle drops in -> expands to pill -> content fades in.
+  Reverse on dismiss.
+  All sizes are fixed (no height:auto) so CSS can transition smoothly.
+*/
+
+.fm {
   position: fixed;
-  top: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  justify-content: center;
+
+  /* Start as circle off-screen */
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  padding: 0;
+  opacity: 0;
+  transform: translateY(-80px) scale(0.5);
+
+  /* Smooth spring-like transitions for everything */
+  transition:
+    width 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+    height 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+    border-radius 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+    padding 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+    margin-left 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.4s ease;
+}
+
+.fm:focus-visible {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 0 0 3px currentColor;
+}
+
+/* ===== ENTER PHASE 1: Circle drops in ===== */
+.fm--circle {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  justify-content: center;
+}
+
+/* ===== ENTER PHASE 2: Expand to pill ===== */
+.fm--expanded {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  width: 380px;
+  height: 48px;
+  border-radius: 14px;
+  padding: 0 16px;
+  justify-content: flex-start;
+}
+
+/* ===== ENTER PHASE 3: Fully visible ===== */
+.fm--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  width: 380px;
+  height: 48px;
+  border-radius: 14px;
+  padding: 0 16px;
+  justify-content: flex-start;
+}
+
+/* ===== EXIT PHASE 1: Collapse back to circle ===== */
+.fm--collapsing {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  padding: 0;
+}
+
+/* ===== EXIT PHASE 2: Circle exits ===== */
+.fm--circle-out {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  padding: 0;
+  opacity: 0;
+  transform: translateY(-80px) scale(0.5);
+}
+
+/* ===== POSITIONS — TOP ===== */
+.fm--top-center {
+  top: 16px;
+  left: 50%;
+  margin-left: -22px;
+}
+
+.fm--top-center.fm--expanded,
+.fm--top-center.fm--visible {
+  margin-left: -190px;
+}
+
+.fm--top-left {
+  top: 16px;
+  left: 20px;
+}
+
+.fm--top-right {
+  top: 16px;
+  right: 20px;
+}
+
+/* ===== POSITIONS — BOTTOM ===== */
+.fm--bottom-center {
+  bottom: 16px;
+  left: 50%;
+  margin-left: -22px;
+  transform: translateY(80px) scale(0.5);
+}
+
+.fm--bottom-center.fm--circle,
+.fm--bottom-center.fm--expanded,
+.fm--bottom-center.fm--visible,
+.fm--bottom-center.fm--collapsing {
+  transform: translateY(0) scale(1);
+}
+
+.fm--bottom-center.fm--expanded,
+.fm--bottom-center.fm--visible {
+  margin-left: -190px;
+}
+
+.fm--bottom-center.fm--circle-out {
+  transform: translateY(80px) scale(0.5);
+}
+
+.fm--bottom-left {
+  bottom: 16px;
+  left: 20px;
+  transform: translateY(80px) scale(0.5);
+}
+
+.fm--bottom-left.fm--circle,
+.fm--bottom-left.fm--expanded,
+.fm--bottom-left.fm--visible,
+.fm--bottom-left.fm--collapsing {
+  transform: translateY(0) scale(1);
+}
+
+.fm--bottom-left.fm--circle-out {
+  transform: translateY(80px) scale(0.5);
+}
+
+.fm--bottom-right {
+  bottom: 16px;
+  right: 20px;
+  transform: translateY(80px) scale(0.5);
+}
+
+.fm--bottom-right.fm--circle,
+.fm--bottom-right.fm--expanded,
+.fm--bottom-right.fm--visible,
+.fm--bottom-right.fm--collapsing {
+  transform: translateY(0) scale(1);
+}
+
+.fm--bottom-right.fm--circle-out {
+  transform: translateY(80px) scale(0.5);
+}
+
+/* ===== TYPES ===== */
+.fm--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.fm--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.fm--warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.fm--info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* ===== ICON ===== */
+.fm__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
-  transform: translate(-50%, -50%);
-  padding: 10px;
-  border-radius: 50%;
-  margin: 10px 0;
-  display: none;
-  animation: slideDown 0.5s ease-in-out forwards,
-    expandMessage 0.5s 1s ease-in-out forwards,
-    fadeOut 7s 8s ease-in-out forwards;
-  overflow: hidden;
-  cursor: pointer;
-  box-sizing: content-box;
-  --bg-success: #d4edda;
-  --bg-error: #f8d7da;
-  --bg-warning: #fff3cd;
-  --bg-info: #d1ecf1;
-  --color-success: #155724;
-  --color-error: #721c24;
-  --color-warning: #856404;
-  --color-info: #0c5460;
 }
 
-.feedback-message.visible {
+/* ===== BODY (text + close) ===== */
+.fm__body {
+  flex: 1;
   display: flex;
-}
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
 
-.feedback-message.visible .feedback-message__text {
-  margin-left: 8px;
-}
-
-.feedback-message__icon img {
-  width: 20px;
-}
-
-.feedback-message__text {
+  /* Hidden by default in circle state */
   opacity: 0;
-  margin-left: 8px;
-  animation: fadeIn 0.5s 1s ease-in-out forwards;
+  max-width: 0;
+  margin-left: 0;
+  transition:
+    opacity 0.4s ease,
+    max-width 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    margin-left 0.5s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.feedback-message__progress {
+/* Show body when expanded */
+.fm--expanded .fm__body,
+.fm--visible .fm__body {
+  opacity: 1;
+  max-width: 320px;
+  margin-left: 10px;
+}
+
+/* Hide body when collapsing */
+.fm--collapsing .fm__body,
+.fm--circle-out .fm__body {
+  opacity: 0;
+  max-width: 0;
+  margin-left: 0;
+  transition:
+    opacity 0.2s ease,
+    max-width 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    margin-left 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ===== TEXT ===== */
+.fm__text {
+  flex: 1;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== CLOSE BUTTON ===== */
+.fm__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 6px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.5;
+  transition: opacity 0.15s ease, background 0.15s ease;
+  padding: 0;
+}
+
+.fm__close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.fm__close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+/* ===== PROGRESS BAR ===== */
+.fm__progress-track {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 5px;
-  transition: width 0.1s ease-in-out;
+  right: 0;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.06);
   opacity: 0;
-  animation: fadeIn 0.5s 1s ease-in-out forwards;
+  transition: opacity 0.3s ease;
 }
 
-.feedback-message.success {
-  background-color: var(--bg-success);
-  color: var(--color-success);
+.fm--visible .fm__progress-track {
+  opacity: 1;
 }
 
-.feedback-message.error {
-  background-color: var(--bg-error);
-  color: var(--color-error);
+.fm__progress-bar {
+  height: 100%;
+  background: currentColor;
+  opacity: 0.35;
+  transition: width 0.05s linear;
 }
 
-.feedback-message.warning {
-  background-color: var(--bg-warning);
-  color: var(--color-warning);
-}
-
-.feedback-message.info {
-  background-color: var(--bg-info);
-  color: var(--color-info);
-}
-
-.feedback-message.success .feedback-message__progress {
-  background-color: var(--color-success);
-}
-
-.feedback-message.error .feedback-message__progress {
-  background-color: var(--color-error);
-}
-
-.feedback-message.warning .feedback-message__progress {
-  background-color: var(--color-warning);
-}
-
-.feedback-message.info .feedback-message__progress {
-  background-color: var(--color-info);
-}
-
-/*Animations*/
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .fm--expanded,
+  .fm--visible {
+    width: calc(100vw - 32px);
   }
-  to {
-    transform: translateY(0);
-  }
-}
 
-@keyframes expandMessage {
-  from {
-    border-radius: 50%;
-    width: 50px;
+  .fm--top-center.fm--expanded,
+  .fm--top-center.fm--visible {
+    left: 16px;
+    margin-left: 0;
   }
-  to {
-    border-radius: 5px;
-    width: 300px;
-    opacity: 1;
-  }
-}
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+  .fm--bottom-center.fm--expanded,
+  .fm--bottom-center.fm--visible {
+    left: 16px;
+    margin-left: 0;
   }
 }

@@ -1,42 +1,72 @@
-# Feedback Message
+# FeedbackMessage
+
+iOS-inspired notification component for React with smooth animations, auto-dismiss with progress bar, and full accessibility.
 
 URL: https://dmalagueta.github.io/feedbackmessageios/
 
-![image](https://github.com/DMalagueta/FeedbackMessageIOS/assets/84686081/a6541c07-d91c-4ee0-a58a-c98c184cae35)
+![FeedbackMessage Demo](./preview.gif)
 
-The FeedbackMessage component is a React component designed to display feedback messages with an IOS animation. It provides a user-friendly way to convey success, error, warning, or information messages to the user, along with an optional progress bar to indicate the remaining time for the message to disappear. 
+## Features
+
+- Smooth slide-in/fade-out animations driven by CSS transitions
+- Auto-dismiss with configurable duration and synced progress bar
+- Six position options (top/bottom, left/center/right)
+- Close button and click-to-dismiss
+- Keyboard dismiss with Escape
+- ARIA roles and focus indicators
+- Fully responsive on mobile
+- onClose callback for parent state sync
+- Zero external dependencies
 
 ## Installation
-
-You can install the `FeedbackMesssage` component via npm or yarn:
-
 ```bash
 npm install
 ```
 
-# Usage
-To use the FeedbackMessage component in your React application, import it and include it in your code. You can provide the following props:
+## Usage
 
-- message (string): The content of the feedback message.
-- type ('success' | 'error' | 'warning' | 'info'): The type of feedback message, influencing its appearance and icon.
-- duration (number, optional): The duration (in milliseconds) the message stays visible before automatically dismissing. Defaults to 3000 milliseconds (3 seconds).
-- isOpen (boolean): the state of the feedback message.
+```tsx
+import { useState } from "react";
+import FeedbackMessage from "./component/FeedbackMessage";
 
-Here's an example of how to use the FeedbackMessage:
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
 
-```js
- <FeedbackMessage
-    message="This is a success message"
-    type="success"
-    duration={5000}
-    isOpen={showFeedback}
-/>
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Show</button>
+      <FeedbackMessage
+        message="Changes saved successfully"
+        type="success"
+        duration={5000}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        position="top-center"
+      />
+    </>
+  );
+}
 ```
 
-# Running the Project
-To run the project using Vite, use the following command:
-```
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `message` | `string` | required | The notification text |
+| `type` | `"success" \| "error" \| "warning" \| "info"` | required | Determines color and icon |
+| `duration` | `number` | `5000` | Auto-dismiss time in milliseconds |
+| `isOpen` | `boolean` | required | Controls visibility |
+| `onClose` | `() => void` | -- | Called when notification is dismissed |
+| `position` | `"top-center" \| "top-left" \| "top-right" \| "bottom-center" \| "bottom-left" \| "bottom-right"` | `"top-center"` | Where the notification appears |
+
+## Running the Project
+
+```bash
 npm run dev
-# or
-yarn dev
+```
+
+## Deploying
+
+```bash
+npm run build && npm run deploy
 ```

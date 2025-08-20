@@ -1,74 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
-*{
-  margin: 0;
-  padding: 0;
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-.main-container{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+html {
+  scroll-behavior: smooth;
 }
 
-.content{
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Roboto', sans-serif;
-}
-
-.content h1{
-    margin-bottom: 20px;
-}
-
-.btn-container{
-    text-align: center;
-}
-
-.btn-success, .btn-info, .btn-warning, .btn-error {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin: 10px 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    width: 150px;
-}
-
-.btn-info {
-    border-color: #0c5460;
-    color: #0c5460;
-    background-color: #d1ecf1;
-}
-
-.btn-error {
-    border-color: #721c24;
-    color: #721c24;
-    background-color: #f8d7da;
-}
-
-.btn-warning {
-    border-color: #856404;
-    color: #856404;
-    background-color: #fff3cd;
-}
-
-.btn-success {
-    border-color: #155724;
-    color: #155724;
-    background-color: #d4edda;
+body {
+  margin: 0;
+  min-height: 100vh;
 }
