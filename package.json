@@ -1,19 +1,41 @@
 {
-  "name": "feedbackmessageios",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@dmalagueta/feedback-message-ios",
+  "version": "1.0.0",
   "type": "module",
+  "description": "iOS-inspired notification component for React with smooth animations, auto-dismiss, and accessibility.",
   "homepage": "https://dmalagueta.github.io/feedbackmessageios",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DMalagueta/feedbackmessageios.git"
+  },
+  "license": "MIT",
+  "author": "Diogo Malagueta",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:lib": "vite build --mode lib",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "prepublishOnly": "npm run build:lib"
   },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -25,7 +47,17 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "gh-pages": "^6.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
-  }
+  },
+  "keywords": [
+    "react",
+    "notification",
+    "feedback",
+    "ios",
+    "toast",
+    "component"
+  ]
 }
