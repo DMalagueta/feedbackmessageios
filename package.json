@@ -59,5 +59,8 @@
     "ios",
     "toast",
     "component"
-  ]
+  ],
+  "publishConfig": {
+    "@dmalagueta:registry": "https://npm.pkg.github.com"
+  }
 }
